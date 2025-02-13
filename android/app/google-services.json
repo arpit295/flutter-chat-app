@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1066766316804",
+    "project_id": "practice-flashchat",
+    "storage_bucket": "practice-flashchat.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1066766316804:android:3191ebd161f4df2dcc8c51",
+        "android_client_info": {
+          "package_name": "com.arpit.practiceflashchat.practice_flashchat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCpxC3SES2dqNu2CjfCgz8IfGiqZVmpdI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
