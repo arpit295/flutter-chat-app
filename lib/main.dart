@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:practice_flashchat/chat_screen.dart';
 import 'package:practice_flashchat/login_screen.dart';
 import 'package:practice_flashchat/registration_screen.dart';
@@ -9,8 +10,12 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
-  runApp(FlashChat());
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]).then((_) {
+    runApp(FlashChat());
+  });
 }
 
 class FlashChat extends StatelessWidget {
