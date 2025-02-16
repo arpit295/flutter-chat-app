@@ -92,11 +92,14 @@ class _ChatScreenState extends State<ChatScreen> {
                     messageBubbles.add(messageBubble);
                   }
                   return Expanded(
-                      child: ListView(
-                          reverse: true,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 20),
-                          children: messageBubbles));
+                      child: ListView.builder(
+                    itemCount: messageBubbles.length,
+                    itemBuilder: (context, index) {
+                      return messageBubbles[index];
+                    },
+                    reverse: true,
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                  ));
                 }
                 return const Center(child: Text('Please Wait'));
               },
