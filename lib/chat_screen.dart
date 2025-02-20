@@ -137,6 +137,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         'timeStamp': FieldValue.serverTimestamp(),
                       });
                       messageTextController.clear();
+                      messageText = '';
                     },
                     child: Text(
                       'Send',
