@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:practice_flashchat/chat_screen.dart';
+import 'package:practice_flashchat/forgot_screen.dart';
 import 'package:practice_flashchat/login_screen.dart';
 import 'package:practice_flashchat/registration_screen.dart';
 import 'package:practice_flashchat/welcome_screen.dart';
@@ -35,6 +36,7 @@ class FlashChat extends StatelessWidget {
           'login_screen': (context) => LoginScreen(),
           'registration_screen': (context) => RegistrationScreen(),
           'chat_screen': (context) => ChatScreen(),
+          'forgot_screen': (context) => ForgotScreen(),
         });
   }
 }

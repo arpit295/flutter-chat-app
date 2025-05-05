@@ -34,6 +34,14 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  void deleteMessage(String messageId) async {
+    try {
+      await firestore.collection('messages').doc(messageId).delete();
+    } catch (e) {
+      print('Failed to delete message: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +55,7 @@ class _ChatScreenState extends State<ChatScreen> {
               auth.signOut();
               Navigator.popUntil(context, (route) => route.isFirst);
             },
-            icon: Icon(Icons.close),
+            icon: Icon(Icons.logout),
           ),
         ],
         title: Center(
@@ -72,23 +80,68 @@ class _ChatScreenState extends State<ChatScreen> {
                 }
                 if (snapshot.hasData) {
                   final messages = snapshot.data?.docs.reversed;
-                  List<MessageBubble> messageBubbles = [];
+                  List<Widget> messageBubbles = [];
                   for (var message in messages!) {
                     final messageData = message.data() as Map<String, dynamic>;
                     final messageText = messageData['text'] ?? '';
                     final messageSender = messageData['sender'] ?? '';
+                    final messageId = message.id;
 
                     final currentUser = loggedInUser?.email;
 
                     // final messageBubble =Text (' $messageText from MessageSender');
                     // messageBubbles.add(messageBubble);
 
-                    final messageBubble = MessageBubble(
-                      sender: messageSender,
-                      text: messageText,
-                      isMe: currentUser == messageSender,
-                    );
-                    messageBubbles.add(messageBubble);
+                    messageBubbles.add(Dismissible(
+                      key: ValueKey(messageId),
+                      onDismissed: (direction) {
+                        deleteMessage(messageId);
+                      },
+                      confirmDismiss: (direction) {
+                        return showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  backgroundColor: Colors.white,
+                                  title: Text(
+                                    'Are You Sure?',
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  content: Text(
+                                    'Do you want to remove the item from the cart ?',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context, false);
+                                      },
+                                      child: Text(
+                                        'No',
+                                        style: TextStyle(
+                                            color: Colors.orange,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context, true);
+                                        },
+                                        child: Text(
+                                          'Yes',
+                                          style:
+                                              TextStyle(color: Colors.orange),
+                                        ))
+                                  ],
+                                ));
+                      },
+                      child: MessageBubble(
+                        sender: messageSender,
+                        text: messageText,
+                        isMe: currentUser == messageSender,
+                      ),
+                    ));
                   }
                   return Expanded(
                       child: ListView.builder(

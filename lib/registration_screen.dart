@@ -113,6 +113,23 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 text: 'Register',
                 colour: Colors.blueAccent,
                 onPressed: () async {
+                  if (email == null ||
+                      email!.isEmpty ||
+                      password == null ||
+                      password!.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        duration: Duration(seconds: 2),
+                        backgroundColor: Colors.red,
+                        content: Text(
+                          'Please enter email and password.',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    );
+                    return; // stop execution here
+                  }
+
                   setState(() {
                     showSpinner = true;
                   });

@@ -37,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               SizedBox(
-                height: 15,
+                height: 10,
               ),
               SizedBox(
                 width: 350,
@@ -108,36 +108,75 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               SizedBox(
-                height: 24,
+                height: 6,
+              ),
+              GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, 'forgot_screen');
+                  },
+                  child: Text(
+                    'Forgot Password ? ',
+                    style: TextStyle(
+                        color: Colors.lightBlueAccent,
+                        fontWeight: FontWeight.bold),
+                  )),
+              SizedBox(
+                height: 6,
               ),
               WelcomeTwoButton(
                 text: 'Log In',
                 colour: Colors.lightBlueAccent,
                 onPressed: () async {
+                  if (email == null ||
+                      email!.isEmpty ||
+                      password == null ||
+                      password!.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        duration: Duration(seconds: 2),
+                        backgroundColor: Colors.red,
+                        content: Text(
+                          'Please enter email and password.',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    );
+                    return; // stop execution here
+                  }
+
                   setState(() {
                     showSpinner = true;
                   });
                   try {
                     final user = await auth.signInWithEmailAndPassword(
-                        email: email!, password: password!);
+                      email: email!,
+                      password: password!,
+                    );
                     if (user != null) {
                       Navigator.pushNamed(context, 'chat_screen');
-                      setState(() {
-                        showSpinner = false;
-                      });
                     }
                   } catch (e) {
-                    print(e);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          duration: Duration(seconds: 2),
+                          backgroundColor: Colors.red,
+                          content: Text(
+                            'Invalid email or password.',
+                            style: TextStyle(color: Colors.white),
+                          )),
+                    );
+                  } finally {
+                    setState(() {
+                      showSpinner = false;
+                    });
                   }
                 },
               )
             ],
           ),
-          if (showSpinner == true)
+          if (showSpinner)
             Center(
-              child: CircularProgressIndicator(
-                color: Colors.blueAccent,
-              ),
+              child: CircularProgressIndicator(color: Colors.blueAccent),
             ),
         ],
       ),
